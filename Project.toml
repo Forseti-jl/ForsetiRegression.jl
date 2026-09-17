@@ -1,0 +1,11 @@
+name = "ForsetiRegression"
+uuid = "3bb59cff-ac57-410c-91b6-039eff35cdf1"
+authors = ["Natapol Pornputtapong <2310273+natapol@users.noreply.github.com>"]
+version = "0.1.0"
+
+[deps]
+ForsetiCore = "9196eadf-2320-4495-bab9-b6d9bba2964b"
+
+[compat]
+ForsetiCore = "0.1"
+julia = "1.10"
