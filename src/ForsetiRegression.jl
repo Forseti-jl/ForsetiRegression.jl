@@ -81,6 +81,22 @@ end
 
 Fit `y ~ X` by ordinary least squares. `X` should *not* include an
 intercept column; one is added automatically unless `intercept = false`.
+
+# Formula
+
+```
+β̂ = (XᵀX)⁻¹Xᵀy                        (solved via QR, not explicit inversion)
+σ̂² = RSS / (n-p),   RSS = Σ(y - Xβ̂)²
+Var(β̂) = σ̂² (XᵀX)⁻¹
+t = β̂ⱼ / SE(β̂ⱼ),   df = n-p
+F = (SS_reg/(p-1)) / (RSS/(n-p))       (overall-model test)
+R² = 1 - RSS/SS_tot
+```
+
+# References
+
+Gauss-Markov theorem; e.g. Draper, N. R., & Smith, H. (1998). *Applied
+Regression Analysis* (3rd ed.). Wiley.
 """
 function linear_reg(y::AbstractVector, X::AbstractMatrix; intercept::Bool = true,
                      terms::Vector{String} = intercept ?
@@ -229,6 +245,37 @@ end
 Fit a binomial GLM with a logit link (`y` must be 0/1) by IRLS. `X` should
 *not* include an intercept column; one is added automatically unless
 `intercept = false`.
+
+# Formula
+
+Iteratively reweighted least squares (IRLS): at each iteration, with
+current fit `η = Xβ`, `μ = 1/(1+e^{-η})`, `w = μ(1-μ)`, and working
+response `z = η + (y-μ)/w`, solve the weighted least squares problem
+
+```
+β_new = (XᵀWX)⁻¹XᵀWz,   W = diag(w)
+```
+
+until `β` converges. Standard errors come from the Fisher information at
+convergence, `Var(β̂) = (XᵀWX)⁻¹`. Deviance = `-2 * Σ[y log μ + (1-y)
+log(1-μ)]`; `null_deviance` is the same formula with `μ` fixed at
+`mean(y)`.
+
+Cross-checked against R's `glm(family=binomial)`: coefficients and
+deviance match to ~8 significant figures; standard errors can differ by
+~1e-4 for some data because R's `summary.glm()` reuses the weight matrix
+from its second-to-last IRLS iterate rather than recomputing it at the
+converged coefficients (both are asymptotically valid) — see
+`ForsetiTutorials.jl`'s R cross-validation tutorial for the traced
+example.
+
+# References
+
+- Nelder, J. A., & Wedderburn, R. W. M. (1972). Generalized linear
+  models. *Journal of the Royal Statistical Society: Series A*, 135(3),
+  370–384.
+- McCullagh, P., & Nelder, J. A. (1989). *Generalized Linear Models*
+  (2nd ed.). Chapman & Hall.
 """
 function logistic_reg(y::AbstractVector, X::AbstractMatrix; intercept::Bool = true,
                        max_iter::Int = 25, tol::Real = 1e-8,
