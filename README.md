@@ -2,7 +2,7 @@
 
 Linear, logistic, and generalized linear model regression.
 
-Part of the [Forseti](https://github.com/natapol) statistical analysis package family.
+Part of the [Forseti](https://github.com/Forseti-jl) statistical analysis package family.
 
 Named `linear_reg`/`logistic_reg` to match tidymodels' (parsnip) model
 naming.
