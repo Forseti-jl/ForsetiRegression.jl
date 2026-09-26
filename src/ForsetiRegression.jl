@@ -5,7 +5,7 @@ Linear and logistic regression, named `linear_reg`/`logistic_reg` to match
 tidymodels' (parsnip) model-spec naming.
 
 Both follow the family-wide pipe-curried calling convention and return a
-`ForsetiFit` subtype usable with [`tidy`](@ref)/[`glance`](@ref)/[`augment`](@ref):
+`ForsetiFit` subtype usable with `tidy`/`glance`/`augment` (from `ForsetiCore`):
 
 ```julia
 df |> linear_reg(:y, :x1, :x2) |> tidy

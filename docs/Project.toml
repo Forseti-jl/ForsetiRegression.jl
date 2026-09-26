@@ -1,0 +1,4 @@
+[deps]
+Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
+ForsetiCore = "9196eadf-2320-4495-bab9-b6d9bba2964b"
+ForsetiRegression = "3bb59cff-ac57-410c-91b6-039eff35cdf1"
